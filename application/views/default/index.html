@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>HMS™ - Huy Manages School</title>
+    <link href="http://localhost/hms/styles/reset.css" rel="stylesheet" type="text/css"/>
+    <link href="http://localhost/hms/styles/text.css" rel="stylesheet" type="text/css"/>
+    <link href="http://localhost/hms/styles/960.css" rel="stylesheet" type="text/css"/>
+    <link href="http://localhost/hms/styles/style.css" rel="stylesheet" type="text/css"/>
+    <link href="http://localhost/hms/styles/jquery-ui-1.9.0.custom.min.css" rel="stylesheet" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+    <link rel="icon" type="image/icon" href="http://localhost/hms/asset/themes/_img/favicon.ico"/>
+    <script>
+        $(function () {
+            $('#txtDateReport').datepicker({
+                defaultDate:+1,
+                beforeShowDay:$.datepicker.noWeekends,
+                firstDay:+0,
+                dateFormat:"yy-mm-dd",
+                onSelect:function (dateText, inst) {
+                    document.class_list.submit();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $(".ttest").click(function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                var messageTitle = $(this).attr('title');
+
+                $("#modal_dialog").load(url).dialog({
+                    minHeight:300,
+                    minWidth:600,
+                    modal:true,
+                    draggable:false,
+                    title:"SIS @ VanPhuc * 2012-2013",
+                    closeText:"Close",
+                    closeOnEscape:true
+                }).effect("slide", 300);
+                $(".ui-widget-overlay").click(function () {
+                    $("#modal_dialog").dialog('close');
+                });
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $(".class_name").click(function (e) {
+                e.preventDefault();
+                var class_id = $(this).attr('id');
+                var messageTitle = 'Teachers of: ' + $(this).attr('title');
+                $.post("http://localhost/hms/staff/my_teachers", {class_id:class_id},
+                        function (response) {
+                            $("#modal_dialog").html(response).dialog({
+                                minHeight:120,
+                                minWidth:300,
+                                modal:true,
+                                title:messageTitle,
+                                closeText:"Close",
+                                closeOnEscape:true,
+                                position:{my:"left top", at:"right top", of:"#" + class_id}
+                            }).hide().show();
+                            $(".ui-widget-overlay").click(function () {
+                                $("#modal_dialog").dialog('close');
+                            });
+                        }).error(function (xhr, status, error) {
+                            $("#modal_dialog").dialog('close');
+                        });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function reloadClassList() {
+            document.class_list.submit();
+        }
+    </script>
+
+    <!--[if IE]>
+    <style type="text/css">#container {
+        margin-top: 10;
+    }</style><![endif]-->
+</head>
+<body xmlns="http://www.w3.org/1999/html">
+<script type="text/javascript">
+    $(function () {
+        $(".staff_info_dialog").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            var messageTitle = $(this).attr('title');
+
+            $("#modal_dialog_top").load(url).dialog({
+                minHeight:300,
+                minWidth:600,
+                modal:true,
+                draggable:false,
+                title:"SIS @ VanPhuc * 2012-2013",
+                closeText:"Close",
+                closeOnEscape:true,
+                buttons:{
+                    Close:function () {
+                        $(this).dialog("close");
+                    }
+                }
+            }).effect("slide", 300);
+            $(".ui-widget-overlay").click(function () {
+                $("#modal_dialog_top").dialog('close');
+            });
+        });
+
+        $("#btn_change_pwd").click(function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            var messageTitle = $(this).attr('title');
+
+            $("#modal_dialog_top").load(url).dialog({
+                minHeight:300,
+                minWidth:600,
+                modal:true,
+                draggable:false,
+                title:messageTitle,
+                closeText:"Close",
+                closeOnEscape:true,
+                buttons:{
+                    Close:function () {
+                        $(this).dialog("close");
+                    }
+                }
+            }).effect("slide", 300);
+            $(".ui-widget-overlay").click(function () {
+                $("#modal_dialog_top").dialog('close');
+            });
+        });
+    });
+</script>
+<div id="upper_header">
+    <div style="width: 100%;text-align: center;">
+        <div class="container_16">
+            <div id="modal_dialog_top"></div>
+            <!-- Search box-->
+            <div class="left_col">
+                <a href="http://localhost/hms/">
+                    <img src="http://localhost/hms/asset/themes/_img/home1.png" alt="Home"
+                         title="Huy Manages School - Home page"/>
+                </a>
+                <a href="http://localhost/hms/attendance/user_guide"
+                   onclick="alert('Not yet documented! :(');return false;">
+                    <img src="http://localhost/hms/asset/themes/_img/bullet_question.png" alt="User Guide"
+                         title="User Manual"/>
+                </a>
+                <a href="mailto:huy.nguyenkim@vanphuc.sis.edu.vn">
+                    <img src="http://localhost/hms/asset/themes/_img/email2.png" alt="Support" title="Ask for support"/>
+                </a>
+                <span style="margin-left: 5px;color: orange;">:: Today is: <strong>27/11/2012</strong></span>
+
+
+            </div>
+            <div class="right_col">
+                <label>Hello, </label>
+                <a class="staff_info_dialog"
+                   href="http://localhost/hms/staff/1">
+                    System Admin </a>|
+                <a id="btn_change_pwd" href="http://localhost/hms/change-password" title="Change your password">Change
+                    password</a>|
+                <a href="http://localhost/hms/logout">
+                    <img src="http://localhost/hms/asset/themes/_img/power2.png" alt="Logout" title="Logout"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="container" class="container_16">
+<div id="header"
+     title="">
+        <span class="grid_1 align_center">
+            <a href="http://localhost/hms/">
+                <img src="http://localhost/hms/asset/themes/_img/sbus.gif" alt="" height="100px"/>
+            </a>
+		</span>
+
+    <div style="text-align: center;">
+        <h2 style="padding-top: 10px; color: #ff4500;">Huy Manages School</h2>
+        <h6>HMS @ Vietnam</h6>
+    </div>
+    <div id="nav_menu_wrapper">
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(" #nav ul ").css({display:"none"}); // Opera Fix
+                $(" #nav li").hover(function () {
+                    $(this).find('ul:first').css({visibility:"visible", display:"none"}).show(200);
+                }, function () {
+                    $(this).find('ul:first').css({visibility:"hidden"});
+                });
+            });
+        </script>
+
+        <ul id="nav">
+            <li><a title="Go to homepage" href="http://localhost/hms/">Home</a></li>
+            <li>
+                <a title="" href="http://localhost/hms/daily-report">Attendance</a>
+                <ul>
+                    <li><a href="http://localhost/hms/submit-attendance">Submit</a></li>
+                    <li><a href="http://localhost/hms/attendance-admin">*Quick Submit</a></li>
+                    <li><a href="http://localhost/hms/monthly-report">Month report</a></li>
+                    <li><a href="http://localhost/hms/daily-report">Report - all classes</a></li>
+                    <li><a href="http://localhost/hms/absent-list">Report - absent list</a></li>
+                </ul>
+            </li>
+            <li><a href="http://localhost/hms/admin/classes">Classes</a>
+                <ul>
+                    <li><a href="http://localhost/hms/admin/classes">Add</a></li>
+                    <li><a href="http://localhost/hms/admin/classes">Search</a></li>
+                </ul>
+            </li>
+            <li><a href="http://localhost/hms/staff">Staff</a>
+                <ul>
+                    <li><a href="http://localhost/hms/staff/add">Add</a></li>
+                    <li><a href="http://localhost/hms/staff/assign">Assign 2 class</a></li>
+                    <li><a href="http://localhost/hms/staff/assign">List all</a></li>
+                </ul>
+            </li>
+            <li><a href="http://localhost/hms/admin">Manage</a></li>
+            <li><a href="http://localhost/hms/home/gallery">Gallery</a></li>
+        </ul>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="grid_16">
+<p class="module_title">Attendance Report</p>
+
+<div id="modal_dialog"></div>
+
+<div class="standard_block" id="studentSearchForm">
+    <div title="Chọn ngày điểm danh!" class="grid_6">
+        <form name="class_list" method="POST" action="http://localhost/hms/attendance/report_daily">
+            <strong>Report date:</strong>
+            <input name="txtDateReport" type="text" class="datepicker" id="txtDateReport"
+                   value="2012-11-27"/>
+        </form>
+
+    </div>
+
+    <div class="grid_6 right_col align_right">
+
+        <div style="color: red;font-size: 8pt;">
+            Submitted: <strong>2</strong>/29 classes. <strong>1</strong> student is absent.
+        </div>
+        <a title="Submit attendance for your class"
+           href="http://localhost/hms/attendance">
+            <img src="http://localhost/hms/asset/themes/_img/register.png" height="20px" width="20px"
+                 alt="Submit new">
+            Submit new</a>
+    </div>
+</div>
+<div class="clearfix" style="margin-bottom: 5px;"></div>
+<div class="standard_block border_standard grid_8" style="margin-left: 0;">
+<div class="box_title">
+    <label style="color:#d2691e">All Classes</label>
+</div>
+<table class="table_standard">
+<tr class="table_header">
+    <!--                    <td>No.</td>-->
+    <td class="align_left">Class</td>
+    <td>Status</td>
+    <td>Updated by</td>
+    <td>Updated on</td>
+</tr>
+
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="1" class="class_name" title="K2" href="">
+            K2 </a>
+    </td>
+    <td>
+        <img title="Lớp đủ - Fully attended." src="http://localhost/hms/asset/themes/_img/accept-icon1.png" height="19px"
+             width="19px" alt="Full"></td>
+    <td class="align_left">
+        <a class="ttest" href="http://localhost/hms/staff/1">System Admin</a>
+    </td>
+    <td>
+        2012-11-27 21:49:11
+    </td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="2" class="class_name" title="Prep Dinosaur" href="">
+            Prep Dinosaur </a>
+    </td>
+    <td>
+        <a title="Absent. Click to see details!" href="http://localhost/hms/attendance/report_absent/2"><img
+                src="http://localhost/hms/asset/themes/_img/emoticon_sad.png" height="21px" width="21px" alt="Absent"></a></td>
+    <td class="align_left">
+        <a class="ttest" href="http://localhost/hms/staff/1">System Admin</a>
+    </td>
+    <td>
+        2012-11-27 21:49:29
+    </td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="3" class="class_name" title="Prep Sea Explorers" href="">
+            Prep Sea Explorers </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="4" class="class_name" title="1 International" href="">
+            1 International </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="5" class="class_name" title="1B" href="">
+            1B </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="6" class="class_name" title="1C" href="">
+            1C </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="7" class="class_name" title="1D" href="">
+            1D </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="8" class="class_name" title="1E" href="">
+            1E </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="9" class="class_name" title="2 International" href="">
+            2 International </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="10" class="class_name" title="2B" href="">
+            2B </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="11" class="class_name" title="2C" href="">
+            2C </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="12" class="class_name" title="2D" href="">
+            2D </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="13" class="class_name" title="2E" href="">
+            2E </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="14" class="class_name" title="3 International" href="">
+            3 International </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="15" class="class_name" title="3B" href="">
+            3B </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="16" class="class_name" title="3C" href="">
+            3C </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="17" class="class_name" title="3D" href="">
+            3D </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="18" class="class_name" title="3E" href="">
+            3E </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="19" class="class_name" title="4 International" href="">
+            4 International </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="20" class="class_name" title="4B" href="">
+            4B </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="21" class="class_name" title="4C" href="">
+            4C </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="22" class="class_name" title="4D" href="">
+            4D </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="23" class="class_name" title="4E" href="">
+            4E </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="24" class="class_name" title="4F" href="">
+            4F </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="25" class="class_name" title="5 International" href="">
+            5 International </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="26" class="class_name" title="5B" href="">
+            5B </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="27" class="class_name" title="5C" href="">
+            5C </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="28" class="class_name" title="5D" href="">
+            5D </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_body_row">
+    <td class="align_left">
+        <a id="29" class="class_name" title="5E" href="">
+            5E </a>
+    </td>
+    <td>
+        <p title="Not submitted yet!">..</p></td>
+    <td title="Hasn't submitted"></td>
+    <td title="Hasn't submitted"></td>
+
+</tr>
+<tr class="table_header">
+    <td colspan="7">
+        <a class="button_standard" title="Submit attendance for your class"
+           href="http://localhost/hms/attendance">
+            <img src="http://localhost/hms/asset/themes/_img/register.png" height="20px" width="20px"
+                 alt="Submit new">
+            Submit</a>
+    </td>
+</tr>
+</table>
+</div>
+<div id="student_list" class="standard_block border_standard grid_7">
+    <div class="box_title">
+        <label style="color:#d2691e">Absent students</label>
+    </div>
+
+
+    <table class="table_standard">
+        <tr class="table_header">
+            <td>No.</td>
+            <td>Class</td>
+            <td class="align_left">Student name</td>
+            <td>Edit</td>
+        </tr>
+        <tr class="table_body_row">
+            <td>
+                1.
+                <input name="txtStudentId" type="hidden" value="452"/>
+            </td>
+            <td class="align_left">Prep Dinosaur</td>
+            <td class="align_left" title="">
+                Ahn Bong Joon
+            </td>
+            <td>
+                <a title="Click vào đây để báo 'Ahn Bong Joon' đã đến! Click in inform that 'Ahn Bong Joon' came."
+                   href="
+                                    http://localhost/hms/attendance/came_already/452/2012-11-27"
+                   onclick="return confirm('Bạn có chắc là học sinh \'Ahn Bong Joon\' đã đến trường không? Are you sure?')">
+                    <img src="http://localhost/hms/asset/themes/_img/came1.png" height="22px" width="22px" alt="Edit">
+                </a>
+            </td>
+        </tr>
+        <tr class="table_header">
+            <td colspan="7">
+                <a class="button_standard" href="http://localhost/hms/attendance/report_absent">
+                    <img src="http://localhost/hms/asset/themes/_img/report_user.png" height="20px" width="20px"
+                         alt="Absent list">
+                    Details</a>
+            </td>
+        </tr>
+    </table>
+
+</div>
+</div>
+</div>
+
+<div id="footer" class="container_16">
+    <div class="shadow"></div>
+    <div class="grid_16" style="color: #ccc">
+        <a style="color: orange;" href="http://localhost/hms/"
+           title="Huy Manages School. [Version 2.0]"
+           onclick=" alert('Developed by Nguyen Kim Huy.\nCopyright © 2012. All rights reserved.');return false;">
+            <strong>HMS™</strong>
+            v2.0 </a>.
+        <!--        © 2012.-->
+        <!--        <a style="color: orange;" title="Developed by Nguyen Kim Huy" href="--><!--"-->
+        <!--           onclick=" alert('Developed by Nguyen Kim Huy.\nEmail: huy.nguyenkim@vanphuc.sis.edu.vn');return false;">-->
+        <!--            <strong>Huy</strong>-->
+        <!--        </a>.-->
+
+        <span>
+            Hỗ trợ tốt trên <strong>FireFox & Chrome</strong>. Currently works on <strong>FireFox &
+            Chrome</strong> only.
+        </span>
+    </div>
+</div>
+
+</body>
+</html>
+<!--Footer.end-->

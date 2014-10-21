@@ -1,0 +1,43 @@
+
+/* Staff list */
+#staff_list {background: none;}
+#staff_list .item_block {
+    display:inline-block;
+    width: 195px;
+    height: 250px;
+    margin: 10px;
+    padding: 5px;
+    vertical-align: top;
+    text-align: center;
+}
+#staff_list .item_block img {
+    height: 70%;
+    width:auto;
+}
+
+#staff_details {width: 100%;display: inline-block;}
+#staff_details .img_wrapper {width: 210px; display: inline-block;float: left;}
+#staff_details .img_wrapper img {
+    max-width: 200px;
+    padding: 0px;
+    margin: 5px 5px 0 5px;
+}
+#staff_details .staff_info {
+    display: block;
+    width: 330px;
+    min-width: 330px;
+    float: left;
+    margin: 10px 5px 5px 10px;
+}
+
+/*For jQuery effects*/
+#modal_dialog, .modal {
+    /*background-color:#fff;*/
+    display:none;
+    width:350px;
+    padding:15px;
+    text-align:left;
+    opacity:0.8;
+    -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+}
